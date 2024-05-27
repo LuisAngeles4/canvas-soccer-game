@@ -12,12 +12,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const basePath = `https://luisangeles4.github.io/${repoName}/assets/`;
 
   const canvasBackgroundImage = new Image();
-  canvasBackgroundImage.src = basePath + "fondo-canvas.jpg";
-
   const circleBackgroundImage = new Image();
-  circleBackgroundImage.src = basePath + "fondo-circle.png";
   const cursorImage = new Image();
+
+  canvasBackgroundImage.src = basePath + "fondo-canvas.jpg";
+  circleBackgroundImage.src = basePath + "fondo-circle.png";
   cursorImage.src = basePath + "fondo-cursor.png";
+
+  let imagesLoaded = 0;
+  const totalImages = 3;
+
+  const imageLoaded = () => {
+    imagesLoaded++;
+    if (imagesLoaded === totalImages) {
+      console.log("Todas las imágenes están cargadas");
+      resetGame();
+      updateCircle();
+    }
+  };
+
+  canvasBackgroundImage.onload = imageLoaded;
+  circleBackgroundImage.onload = imageLoaded;
+  cursorImage.onload = imageLoaded;
 
   cursorImage.onload = () => {
     console.log("Imagen del cursor cargada");
@@ -31,13 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let gameRunning = true;
   let arrayCircle = [];
   let circleId = 0;
-
-  canvasBackgroundImage.onload = () => {
-    circleBackgroundImage.onload = () => {
-      resetGame();
-      updateCircle();
-    };
-  };
 
   const resetGame = () => {
     clickedCirclesCount = 0;
