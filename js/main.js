@@ -15,29 +15,27 @@ document.addEventListener("DOMContentLoaded", () => {
   const circleBackgroundImage = new Image();
   const cursorImage = new Image();
 
-  canvasBackgroundImage.src = basePath + "fondo-canvas.jpg";
-  circleBackgroundImage.src = basePath + "fondo-circle.png";
-  cursorImage.src = basePath + "fondo-cursor.png";
+  const images = [canvasBackgroundImage, circleBackgroundImage, cursorImage];
+  const imagePaths = [
+    basePath + "fondo-canvas.jpg",
+    basePath + "fondo-circle.png",
+    basePath + "fondo-cursor.png",
+  ];
 
   let imagesLoaded = 0;
-  const totalImages = 3;
+  const totalImages = images.length;
 
-  const imageLoaded = () => {
-    imagesLoaded++;
-    if (imagesLoaded === totalImages) {
-      console.log("Todas las imágenes están cargadas");
-      resetGame();
-      updateCircle();
-    }
-  };
-
-  canvasBackgroundImage.onload = imageLoaded;
-  circleBackgroundImage.onload = imageLoaded;
-  cursorImage.onload = imageLoaded;
-
-  cursorImage.onload = () => {
-    console.log("Imagen del cursor cargada");
-  };
+  images.forEach((img, index) => {
+    img.src = imagePaths[index];
+    img.onload = () => {
+      imagesLoaded++;
+      if (imagesLoaded === totalImages) {
+        console.log("Todas las imágenes están cargadas");
+        resetGame();
+        updateCircle();
+      }
+    };
+  });
 
   let mouseX = 0;
   let mouseY = 0;
