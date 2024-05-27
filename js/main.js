@@ -8,13 +8,16 @@ document.addEventListener("DOMContentLoaded", () => {
   canvas.height = window_height;
   canvas.width = window_width;
 
+  const repoName = "canvas-soccer-game";
+  const basePath = `https://luisangeles4.github.io/${repoName}/assets/`;
+
   const canvasBackgroundImage = new Image();
-  canvasBackgroundImage.src = "../assets/fondo-canvas.jpg";
+  canvasBackgroundImage.src = basePath + "fondo-canvas.jpg";
 
   const circleBackgroundImage = new Image();
-  circleBackgroundImage.src = "../assets/fondo-circle.png";
+  circleBackgroundImage.src = basePath + "fondo-circle.png";
   const cursorImage = new Image();
-  cursorImage.src = "../assets/fondo-cursor.png";
+  cursorImage.src = basePath + "fondo-cursor.png";
 
   cursorImage.onload = () => {
     console.log("Imagen del cursor cargada");
