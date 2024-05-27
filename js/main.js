@@ -10,32 +10,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const repoName = "canvas-soccer-game";
   const basePath = `https://luisangeles4.github.io/${repoName}/assets/`;
+  const images = {
+    canvasBackground: `${basePath}fondo-canvas.jpg`,
+    circleBackground: `${basePath}fondo-circle.png`,
+    cursor: `${basePath}fondo-cursor.png`,
+  };
 
-  const canvasBackgroundImage = new Image();
-  const circleBackgroundImage = new Image();
-  const cursorImage = new Image();
-
-  const images = [canvasBackgroundImage, circleBackgroundImage, cursorImage];
-  const imagePaths = [
-    basePath + "fondo-canvas.jpg",
-    basePath + "fondo-circle.png",
-    basePath + "fondo-cursor.png",
-  ];
+  const loadedImages = {};
 
   let imagesLoaded = 0;
-  const totalImages = images.length;
+  const totalImages = Object.keys(images).length;
 
-  images.forEach((img, index) => {
-    img.src = imagePaths[index];
+  for (const key in images) {
+    const img = new Image();
+    img.src = images[key];
     img.onload = () => {
+      loadedImages[key] = img;
       imagesLoaded++;
       if (imagesLoaded === totalImages) {
-        console.log("Todas las imágenes están cargadas");
-        resetGame();
-        updateCircle();
+        startGame();
       }
     };
-  });
+  }
 
   let mouseX = 0;
   let mouseY = 0;
@@ -74,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
       context.arc(this.posX, this.posY, this.radius, 0, Math.PI * 2, false);
       context.clip();
       context.drawImage(
-        circleBackgroundImage,
+        loadedImages.circleBackground,
         this.posX - this.radius,
         this.posY - this.radius,
         this.radius * 2,
@@ -156,7 +152,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     requestAnimationFrame(updateCircle);
 
-    ctx.drawImage(canvasBackgroundImage, 0, 0, window_width, window_height);
+    ctx.drawImage(
+      loadedImages.canvasBackground,
+      0,
+      0,
+      window_width,
+      window_height
+    );
 
     for (let i = 0; i < arrayCircle.length; i++) {
       const stillInBounds = arrayCircle[i].update(ctx);
@@ -199,9 +201,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     ctx.drawImage(
-      cursorImage,
-      mouseX - cursorImage.width / 2,
-      mouseY - cursorImage.height / 2
+      loadedImages.cursor,
+      mouseX - loadedImages.cursor.width / 2,
+      mouseY - loadedImages.cursor.height / 2
     );
 
     ctx.beginPath();
@@ -209,6 +211,11 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.fillStyle = "red";
     ctx.fill();
     ctx.closePath();
+  };
+
+  const startGame = () => {
+    resetGame();
+    updateCircle();
   };
 
   canvas.addEventListener("mousemove", (event) => {
